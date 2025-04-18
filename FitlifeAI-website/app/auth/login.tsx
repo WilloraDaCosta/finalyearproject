@@ -7,6 +7,7 @@ import {
   StyleSheet,
   ScrollView,
   Alert,
+  Image,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router'; //  Import router
@@ -34,6 +35,7 @@ const Login = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <Image source={require('@/assets/images/login/top.png')} style={styles.up_image} />
       <Text style={styles.heading}>LOGIN</Text>
 
       <TextInput
@@ -64,6 +66,9 @@ const Login = () => {
          onPress={() => router.push('/auth/signUp')}
          >SIGN UP</Text>
       </Text>
+
+      <Image source={require('@/assets/images/login/bottom.png')} style={styles.bottom_image} />
+
     </ScrollView>
   );
 };
@@ -114,6 +119,22 @@ const styles = StyleSheet.create({
     color: '#3A7CA5',
     fontWeight: 'bold',
   },
+  up_image: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    // width: '100%',
+    height: 200,
+  },
+  bottom_image: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    // width: '100%',
+    height: 200,
+  }
 });
 
 export default Login;

@@ -99,6 +99,7 @@ import {
   StyleSheet,
   ScrollView,
   Alert,
+  Image,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
@@ -202,6 +203,10 @@ const SignUp = () => {
         onPress={() => router.push('/auth/login')}
         >LOGIN</Text>
       </Text>
+      <Image
+        source={require('@/assets/images/signup/signup-wave.png')} // Replace with the path to your image
+        style={styles.bottomImage}
+      />
     </ScrollView>
   );
 };
@@ -251,6 +256,13 @@ const styles = StyleSheet.create({
   loginText: {
     color: '#3A7CA5',
     fontWeight: 'bold',
+  },
+  bottomImage: {
+    // marginTop: 20, // Add some space from the button
+    width: '100%', // Set the image width to match the screen width
+    height: 200, // Adjust the height to your preference
+    bottom: 0,
+    left: 0,
   },
 });
 
