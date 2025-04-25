@@ -60,12 +60,12 @@ const Login = () => {
         </LinearGradient>
       </TouchableOpacity>
 
-      <Text style={styles.footerText}>
+      <View><Text style={styles.footerText}>
         Don't have an account?{' '}
         <Text style={styles.loginText}
          onPress={() => router.push('/auth/signUp')}
          >SIGN UP</Text>
-      </Text>
+      </Text></View>
 
       <Image source={require('@/assets/images/login/bottom.png')} style={styles.bottom_image} />
 

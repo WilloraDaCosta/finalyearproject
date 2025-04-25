@@ -25,12 +25,12 @@ export default function HomeLayout(): JSX.Element {
        
        {/* Bottom wave */}
       {/* <View style={styles.bottomWave} /> */}
-      <Image source={require('@/assets/images/home-page/Bottom_wave_1.png')}  />
+      <Image source={require('@/assets/images/home-page/Bottom_wave_1.png')}  style={styles.bottomWave1}/>
       <Image source={require('@/assets/images/home-page/Bottom_wave_2.png')} style={styles.bottomWave2} />
 
       {/* Buttons */}
       <View style={styles.buttonContainer}>
-      <TouchableOpacity style={styles.button} onPress={() => router.push('/auth/signUp')}>
+      <TouchableOpacity style={styles.button} onPress={() => router.push('/auth/signUp')} >
         <Text style={styles.buttonText}>Sign up</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={() => router.push('/auth/login')}>
@@ -122,4 +122,9 @@ const styles = StyleSheet.create({
     height: 120,
    
   },
+  bottomWave1: {
+    // position: 'absolute',
+    bottom: 0,
+    height: 339,
+  }
 });

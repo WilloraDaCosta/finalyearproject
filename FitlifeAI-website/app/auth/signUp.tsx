@@ -197,12 +197,12 @@ const SignUp = () => {
         </LinearGradient>
       </TouchableOpacity>
 
-      <Text style={styles.footerText}>
+      <View><Text style={styles.footerText}>
         already have an account?{' '}
         <Text style={styles.loginText}
         onPress={() => router.push('/auth/login')}
         >LOGIN</Text>
-      </Text>
+      </Text></View>
       <Image
         source={require('@/assets/images/signup/signup-wave.png')} // Replace with the path to your image
         style={styles.bottomImage}
