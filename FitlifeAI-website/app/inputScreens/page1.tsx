@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { useLocalSearchParams } from 'expo-router'; // <-- to get params
+import { useLocalSearchParams, useRouter  } from 'expo-router'; // <-- to get params
 
 
 const GenderAgeOccupationScreen = () => {
@@ -11,7 +11,28 @@ const GenderAgeOccupationScreen = () => {
   const [physicalActivity, setPhysicalActivity] = useState('');
  
   const { username } = useLocalSearchParams(); // <-- get username
+  const router = useRouter(); // <-- initialize router
 
+  const handleNext = () => {
+    if (!gender || !age || !occupation || !physicalActivity) {
+      alert('Please fill all fields!');
+      return;
+    }
+    
+    // Navigate to next onboarding page, passing current form data
+    router.push({
+      pathname: '/inputScreens/page2', // <-- update this to your next page
+      params: { 
+        username,
+        gender,
+        age,
+        occupation,
+        physicalActivity 
+      }
+    });
+  };
+
+  
   return (
     <View style={styles.container}>
       <Text style={styles.welcomeText}>Welcome, {username}</Text>
@@ -55,6 +76,11 @@ const GenderAgeOccupationScreen = () => {
         value={physicalActivity}
         onChangeText={setPhysicalActivity}
       />
+
+      {/* Next Button */}
+      <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
+        <Text style={styles.nextButtonText}>Next</Text>
+      </TouchableOpacity>
 
     </View>
   );
@@ -109,6 +135,18 @@ const styles = StyleSheet.create({
   },
   radioText: {
     fontSize: 16,
+  },
+  nextButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  nextButton: {
+    backgroundColor: '#3A7CA5',
+    padding: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 20,
   },
 });
 
