@@ -26,8 +26,10 @@ const Login = () => {
 
     // You would typically verify credentials here
     console.log('Logging in with:', { emailOrUsername, password });
-    Alert.alert('Success', 'Logged in successfully!');
+    // Alert.alert('Success', 'Logged in successfully!');
     
+    router.push('/inputScreens/page1'); // <-- added navigation line
+
     // Clear inputs
     setEmailOrUsername('');
     setPassword('');
