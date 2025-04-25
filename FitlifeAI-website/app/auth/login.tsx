@@ -28,7 +28,11 @@ const Login = () => {
     console.log('Logging in with:', { emailOrUsername, password });
     // Alert.alert('Success', 'Logged in successfully!');
     
-    router.push('/inputScreens/page1'); // <-- added navigation line
+    // router.push('/inputScreens/page1'); // <-- added navigation line
+    router.push({
+      pathname: '/inputScreens/page1', // <-- updated
+      params: { username: emailOrUsername }, // <-- passing username as param
+    });
 
     // Clear inputs
     setEmailOrUsername('');

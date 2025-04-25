@@ -1,16 +1,20 @@
 
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { useLocalSearchParams } from 'expo-router'; // <-- to get params
+
 
 const GenderAgeOccupationScreen = () => {
   const [gender, setGender] = useState('');
   const [age, setAge] = useState('');
   const [occupation, setOccupation] = useState('');
   const [physicalActivity, setPhysicalActivity] = useState('');
+ 
+  const { username } = useLocalSearchParams(); // <-- get username
 
   return (
     <View style={styles.container}>
-      <Text style={styles.welcomeText}>Welcome, </Text>
+      <Text style={styles.welcomeText}>Welcome, {username}</Text>
 
       <Text style={styles.label}>What is your gender?</Text>
 
