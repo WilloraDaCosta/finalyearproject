@@ -2,9 +2,13 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useLocalSearchParams, useRouter  } from 'expo-router'; // <-- to get params
+import { useUser } from '@/contexts/UserContext';
 
 
 const GenderAgeOccupationScreen = () => {
+
+  const { userInfo, updateUserInfo } = useUser();
+
   const [gender, setGender] = useState('');
   const [age, setAge] = useState('');
   const [occupation, setOccupation] = useState('');
@@ -18,18 +22,24 @@ const GenderAgeOccupationScreen = () => {
       alert('Please fill all fields!');
       return;
     }
+
+    updateUserInfo({ gender, age, occupation, physicalActivity });
+
     
     // Navigate to next onboarding page, passing current form data
-    router.push({
-      pathname: '/inputScreens/page2', // <-- update this to your next page
-      params: { 
-        username,
-        gender,
-        age,
-        occupation,
-        physicalActivity 
-      }
-    });
+    // router.push({
+    //   pathname: '/inputScreens/page2', // <-- update this to your next page
+    //   params: { 
+    //     username,
+    //     gender,
+    //     age,
+    //     occupation,
+    //     physicalActivity 
+    //   }
+    // });
+
+    router.push('/inputScreens/page2');
+ 
   };
 
   

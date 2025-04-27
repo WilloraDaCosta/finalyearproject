@@ -11,11 +11,14 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router'; //  Import router
+import { useUser } from '@/contexts/UserContext'; // <-- Import
+
 
 const Login = () => {
   const [emailOrUsername, setEmailOrUsername] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter(); //  Initialize router
+  const { updateUserInfo } = useUser(); // <-- Context function
 
 
   const handleLogin = () => {
@@ -28,6 +31,8 @@ const Login = () => {
     console.log('Logging in with:', { emailOrUsername, password });
     // Alert.alert('Success', 'Logged in successfully!');
     
+    updateUserInfo({ username: emailOrUsername }); // <-- Save username globally
+
     // router.push('/inputScreens/page1'); // <-- added navigation line
     router.push({
       pathname: '/inputScreens/page1', // <-- updated

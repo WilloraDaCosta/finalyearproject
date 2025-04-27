@@ -103,6 +103,7 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
+import { useUser } from '@/contexts/UserContext'; // <-- Import context
 
 
 const SignUp = () => {
@@ -114,7 +115,8 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const router = useRouter(); //  Initialize router
-  
+  const { updateUserInfo } = useUser(); // <-- ✅ Added: Access updateUserInfo from context
+
 
   const handleSignUp = () => {
     // Basic validation
@@ -137,7 +139,9 @@ const SignUp = () => {
     });
 
     Alert.alert('Success', 'You have signed up successfully!');
-    
+    updateUserInfo({ firstName, lastName, email, username, password }); // <-- Save username globally
+
+    router.push('/inputScreens/page1');
     // Reset form
     setFirstName('');
     setLastName('');
