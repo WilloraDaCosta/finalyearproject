@@ -67,6 +67,10 @@ interface UserInfo {
   age: string;
   occupation: string;
   physicalActivity: string;
+  sleepHours: number;
+  qualityOfSleep: number;
+  stressLevel: number;
+
 }
 
 // 2. Define Context type
@@ -95,6 +99,9 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     age: '',
     occupation: '',
     physicalActivity: '',
+    sleepHours: 0, // Set initial value for sleepHours
+    qualityOfSleep: 0, // Set initial value for qualityOfSleep
+    stressLevel: 0, // Set initial value for stressLevel
   });
 
   // Allow partial updates
