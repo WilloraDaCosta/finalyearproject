@@ -1,16 +1,51 @@
 
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { useLocalSearchParams, useRouter  } from 'expo-router'; // <-- to get params
+import { useUser } from '@/contexts/UserContext';
+
 
 const GenderAgeOccupationScreen = () => {
+
+  const { userInfo, updateUserInfo } = useUser();
+
   const [gender, setGender] = useState('');
   const [age, setAge] = useState('');
   const [occupation, setOccupation] = useState('');
   const [physicalActivity, setPhysicalActivity] = useState('');
+ 
+  const { username } = useLocalSearchParams(); // <-- get username
+  const router = useRouter(); // <-- initialize router
 
+  const handleNext = () => {
+    if (!gender || !age || !occupation || !physicalActivity) {
+      alert('Please fill all fields!');
+      return;
+    }
+
+    updateUserInfo({ gender, age, occupation, physicalActivity });
+
+    
+    // Navigate to next onboarding page, passing current form data
+    // router.push({
+    //   pathname: '/inputScreens/page2', // <-- update this to your next page
+    //   params: { 
+    //     username,
+    //     gender,
+    //     age,
+    //     occupation,
+    //     physicalActivity 
+    //   }
+    // });
+
+    router.push('/inputScreens/page2');
+ 
+  };
+
+  
   return (
     <View style={styles.container}>
-      <Text style={styles.welcomeText}>Welcome, </Text>
+      <Text style={styles.welcomeText}>Welcome, {username}</Text>
 
       <Text style={styles.label}>What is your gender?</Text>
 
@@ -51,6 +86,11 @@ const GenderAgeOccupationScreen = () => {
         value={physicalActivity}
         onChangeText={setPhysicalActivity}
       />
+
+      {/* Next Button */}
+      <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
+        <Text style={styles.nextButtonText}>Next</Text>
+      </TouchableOpacity>
 
     </View>
   );
@@ -105,6 +145,18 @@ const styles = StyleSheet.create({
   },
   radioText: {
     fontSize: 16,
+  },
+  nextButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  nextButton: {
+    backgroundColor: '#3A7CA5',
+    padding: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 20,
   },
 });
 
