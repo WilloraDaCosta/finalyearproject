@@ -1,6 +1,6 @@
 import { Slot } from 'expo-router';
 import { SafeAreaView } from 'react-native';
-import { UserProvider } from '@/contexts/UserContext';
+import { UserProvider } from '@/contexts/userContext';
 
 
 export default function Layout() {

@@ -5,86 +5,63 @@ import { useLocalSearchParams, useRouter  } from 'expo-router'; // <-- to get pa
 import { useUser } from '@/contexts/userContext';
 
 
-const GenderAgeOccupationScreen = () => {
+const SleepScreen = () => {
 
   const { userInfo, updateUserInfo } = useUser();
 
-  const [gender, setGender] = useState('');
-  const [age, setAge] = useState('');
-  const [occupation, setOccupation] = useState('');
-  const [physicalActivity, setPhysicalActivity] = useState('');
+  const [sleepHours, setSleepHours] = useState<number>(0 );
+  const [qualityOfSleep, setQualityOfSleep] = useState<number>( 0);
+  const [stressLevel, setStressLevel ] = useState<number>(0 );
  
   const { username } = useLocalSearchParams(); // <-- get username
   const router = useRouter(); // <-- initialize router
 
   const handleNext = () => {
-    if (!gender || !age || !occupation || !physicalActivity) {
+    if (!sleepHours || !qualityOfSleep || !stressLevel) {
       alert('Please fill all fields!');
       return;
     }
 
-    updateUserInfo({ gender, age, occupation, physicalActivity });
+    updateUserInfo({ sleepHours, qualityOfSleep, stressLevel });
 
     
-    // Navigate to next onboarding page, passing current form data
-    // router.push({
-    //   pathname: '/inputScreens/page2', // <-- update this to your next page
-    //   params: { 
-    //     username,
-    //     gender,
-    //     age,
-    //     occupation,
-    //     physicalActivity 
-    //   }
-    // });
+  
 
-    router.push('/inputScreens/page2');
+    router.push('/inputScreens/page3');
  
   };
 
   
   return (
     <View style={styles.container}>
-      <Text style={styles.welcomeText}>Welcome, {username}</Text>
+      <Text style={styles.welcomeText}>Sleep is Important!</Text>
 
-      <Text style={styles.label}>What is your gender?</Text>
+      <Text style={styles.label}>On average, how many hours do you sleep per night?</Text>
 
-      <View style={styles.radioContainer}>
-        {['Male', 'Female', 'Prefer not to say'].map((option) => (
-          <TouchableOpacity 
-            key={option} 
-            style={styles.radioButton}
-            onPress={() => setGender(option)}
-          >
-            <View style={[styles.circle, gender === option && styles.selected]} />
-            <Text style={styles.radioText}>{option}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-
-      <Text style={styles.label}>Please enter your age</Text>
-      <TextInput
+    <TextInput
         style={styles.input}
-        placeholder="age"
-        value={age}
-        onChangeText={setAge}
+        placeholder="sleep hours"
+        value={sleepHours.toString()}
+        onChangeText= {(text) => setSleepHours(Number(text))}
         keyboardType="numeric"
       />
 
-      <Text style={styles.label}>Occupation</Text>
+      <Text style={styles.label}>What would you rate your quality of sleep?</Text>
       <TextInput
         style={styles.input}
-        placeholder="occupation"
-        value={occupation}
-        onChangeText={setOccupation}
+        placeholder="quality of sleep"
+        value= {qualityOfSleep.toString()}
+        onChangeText= {(text) => setQualityOfSleep(Number(text))}
+        keyboardType="numeric"
       />
 
-      <Text style={styles.label}>Physical Activity Level</Text>
+      <Text style={styles.label}>Define Your stress level</Text>
       <TextInput
         style={styles.input}
-        placeholder="physical activity level"
-        value={physicalActivity}
-        onChangeText={setPhysicalActivity}
+        placeholder="stress level"
+        value= {stressLevel.toString()}
+        onChangeText= {(text) => setStressLevel(Number(text))}
+        keyboardType="numeric"
       />
 
       {/* Next Button */}
@@ -160,4 +137,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GenderAgeOccupationScreen;
+export default SleepScreen;
