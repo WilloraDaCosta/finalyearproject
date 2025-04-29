@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router'; //  Import router
-import { useUser } from '@/contexts/UserContext'; // <-- Import
+import { useUser } from '@/contexts/userContext'; // <-- Import
 
 
 const Login = () => {

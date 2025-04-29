@@ -103,7 +103,7 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
-import { useUser } from '@/contexts/UserContext'; // <-- Import context
+import { useUser } from '@/contexts/userContext'; // <-- Import context
 
 
 const SignUp = () => {

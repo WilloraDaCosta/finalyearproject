@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useLocalSearchParams, useRouter  } from 'expo-router'; // <-- to get params
-import { useUser } from '@/contexts/UserContext';
+import { useUser } from '@/contexts/userContext';
 
 
 const GenderAgeOccupationScreen = () => {
