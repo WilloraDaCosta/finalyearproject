@@ -28,7 +28,7 @@ const SleepScreen = () => {
     
   
 
-    router.push('/inputScreens/page3');
+    router.push('/inputScreens/page4');
  
   };
 
