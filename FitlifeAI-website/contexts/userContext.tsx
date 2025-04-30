@@ -74,6 +74,13 @@ interface UserInfo {
   weight: number;
   bmi: number;
   bmiCategory: string;
+  bloodPressureCategory: string;
+  systolicPressure: number;
+  diastolicPressure: number;
+  heartrate: number;
+  dailySteps: number;
+  sleepDisorder: string;
+
 
 }
 
@@ -110,6 +117,12 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     weight: 0, // Set initial value for weight
     bmi: 0, // Set initial value for bmi
     bmiCategory: '', // Set initial value for bmiCategory
+    bloodPressureCategory: '', // Set initial value for bloodPressureCategory
+    systolicPressure: 0, // Set initial value for systolicPressure    
+    diastolicPressure: 0, // Set initial value for diastolicPressure
+    heartrate: 0, // Set initial value for heartrate
+    dailySteps: 0, // Set initial value for dailySteps
+    sleepDisorder: '', // Set initial value for sleepDisorder
   });
 
   // Allow partial updates
