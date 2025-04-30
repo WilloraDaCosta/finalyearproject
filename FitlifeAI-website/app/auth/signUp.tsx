@@ -10,7 +10,6 @@
 // // import LinearGradient from 'react-native-linear-gradient';
 // import { LinearGradient } from 'expo-linear-gradient';
 
-
 // const SignUp = () => {
 //   return (
 //     <ScrollView contentContainerStyle={styles.container}>
@@ -30,11 +29,10 @@
 //       </TouchableOpacity>
 
 //       <Text style={styles.footerText}>
-//         already have an account?{' '} 
+//         already have an account?{' '}
 //         <Text style={styles.loginText}>LOGIN</Text>
 //       </Text>
 
-     
 //     </ScrollView>
 //   );
 // };
@@ -89,8 +87,7 @@
 
 // export default SignUp;
 
-
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -100,55 +97,75 @@ import {
   ScrollView,
   Alert,
   Image,
-} from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { useRouter } from 'expo-router';
-import { useUser } from '@/contexts/userContext'; // <-- Import context
-
+} from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { useRouter } from "expo-router";
+import axios from "axios"; // Import axios
+import { useUser } from "@/contexts/userContext"; // <-- Import context
 
 const SignUp = () => {
   // Form state
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const router = useRouter(); //  Initialize router
   const { updateUserInfo } = useUser(); // <-- ✅ Added: Access updateUserInfo from context
 
-
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     // Basic validation
-    if (!firstName || !lastName || !email || !username || !password || !confirmPassword) {
-      Alert.alert('Error', 'Please fill in all fields.');
+    if (
+      !firstName ||
+      !lastName ||
+      !email ||
+      !username ||
+      !password ||
+      !confirmPassword
+    ) {
+      Alert.alert("Error", "Please fill in all fields.");
       return;
     }
     if (password !== confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match.');
+      Alert.alert("Error", "Passwords do not match.");
       return;
     }
 
-    // Normally here you would send the form data to your backend or Firebase
-    console.log('Form Data:', {
-      firstName,
-      lastName,
-      email,
-      username,
-      password,
-    });
+    // Send form data to your Django backend
+    try {
+      const response = await axios.post("http://localhost:8000/api/signup/", {
+        // Replace with your actual backend URL
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        username: username,
+        password: password,
+      });
 
-    Alert.alert('Success', 'You have signed up successfully!');
-    updateUserInfo({ firstName, lastName, email, username, password }); // <-- Save username globally
+      console.log("Signup successful:", response.data);
+      Alert.alert("Success", "You have signed up successfully!");
 
-    router.push('/inputScreens/page1');
+      // Optionally, you can update the global user info context here
+      updateUserInfo({ firstName, lastName, email, username });
+
+      // Navigate to the next page
+      router.push("/inputScreens/page1");
+    } catch (error) {
+      console.error("Error signing up:", error);
+      Alert.alert(
+        "Error",
+        "There was an issue with your signup. Please try again."
+      );
+    }
+
     // Reset form
-    setFirstName('');
-    setLastName('');
-    setEmail('');
-    setUsername('');
-    setPassword('');
-    setConfirmPassword('');
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setUsername("");
+    setPassword("");
+    setConfirmPassword("");
   };
 
   return (
@@ -196,19 +213,24 @@ const SignUp = () => {
       />
 
       <TouchableOpacity style={styles.buttonContainer} onPress={handleSignUp}>
-        <LinearGradient colors={['#5A9BD5', '#6BAED6']} style={styles.button}>
+        <LinearGradient colors={["#5A9BD5", "#6BAED6"]} style={styles.button}>
           <Text style={styles.buttonText}>Sign up</Text>
         </LinearGradient>
       </TouchableOpacity>
 
-      <View><Text style={styles.footerText}>
-        already have an account?{' '}
-        <Text style={styles.loginText}
-        onPress={() => router.push('/auth/login')}
-        >LOGIN</Text>
-      </Text></View>
+      <View>
+        <Text style={styles.footerText}>
+          already have an account?{" "}
+          <Text
+            style={styles.loginText}
+            onPress={() => router.push("/auth/login")}
+          >
+            LOGIN
+          </Text>
+        </Text>
+      </View>
       <Image
-        source={require('@/assets/images/signup/signup-wave.png')} // Replace with the path to your image
+        source={require("@/assets/images/signup/signup-wave.png")} // Replace with the path to your image
         style={styles.bottomImage}
       />
     </ScrollView>
@@ -217,54 +239,53 @@ const SignUp = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     padding: 20,
     flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   heading: {
     fontSize: 26,
-    color: '#3A7CA5',
-    fontWeight: 'bold',
+    color: "#3A7CA5",
+    fontWeight: "bold",
     marginBottom: 20,
   },
   input: {
-    width: '100%',
-    backgroundColor: '#f9f9f9',
-    borderColor: '#ccc',
+    width: "100%",
+    backgroundColor: "#f9f9f9",
+    borderColor: "#ccc",
     borderWidth: 1,
     padding: 12,
     marginVertical: 8,
     borderRadius: 8,
   },
   buttonContainer: {
-    width: '100%',
+    width: "100%",
     marginTop: 20,
   },
   button: {
     padding: 15,
     borderRadius: 10,
-    alignItems: 'center',
+    alignItems: "center",
   },
   buttonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   footerText: {
     marginTop: 15,
     fontSize: 13,
-    color: '#666',
+    color: "#666",
   },
   loginText: {
-    color: '#3A7CA5',
-    fontWeight: 'bold',
+    color: "#3A7CA5",
+    fontWeight: "bold",
   },
   bottomImage: {
-    // marginTop: 20, // Add some space from the button
-    width: '100%', // Set the image width to match the screen width
-    height: 200, // Adjust the height to your preference
+    width: "100%",
+    height: 200,
     bottom: 0,
     left: 0,
   },
