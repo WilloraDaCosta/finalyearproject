@@ -1,0 +1,76 @@
+import React from 'react';
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { RelativePathString, useRouter } from 'expo-router';
+
+const Footer = () => {
+  const router = useRouter();
+
+  const tabs = [
+    {
+      label: 'ChatBot',
+      icon: require('../assets/Footer-svg/chatbot.svg'),
+      route: '/chatbot',
+    },
+    {
+      label: 'Nutrition',
+      icon: require('../assets/Footer-svg/nutrition.svg'),
+      route: '/nutrition',
+    },
+    {
+      label: 'Home',
+      icon: require('../assets/Footer-svg/home.svg'),
+      route: '/home',
+    },
+    {
+      label: 'Fitness',
+      icon: require('../assets/Footer-svg/exercise.svg'),
+      route: '/fitness',
+    },
+    {
+      label: 'Profile',
+      icon: require('../assets/Footer-svg/profile.svg'),
+      route: '/profile',
+    },
+  ];
+
+  return (
+    <View style={styles.container}>
+      {tabs.map((tab, index) => (
+        <TouchableOpacity
+          key={index}
+          style={styles.tab}
+          onPress={() => router.push(tab.route as RelativePathString)}
+        >
+          <Image source={tab.icon} style={styles.icon} resizeMode="contain" />
+          <Text style={styles.label}>{tab.label}</Text>
+        </TouchableOpacity>
+      ))}
+    </View>
+  );
+};
+
+export default Footer;
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    paddingVertical: 10,
+    borderTopWidth: 1,
+    borderTopColor: '#ccc',
+  },
+  tab: {
+    alignItems: 'center',
+  },
+  icon: {
+    width: 28,
+    height: 28,
+    marginBottom: 4,
+  },
+  label: {
+    fontSize: 12,
+    color: '#2E6D9C',
+  },
+});
