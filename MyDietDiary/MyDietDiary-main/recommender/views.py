@@ -65,8 +65,8 @@ def index(request):
         if(goal=="healthy"):
             print("h")
             finaldata=Healthy(age,weight,height)
-            bmi=int(finaldata[len(finaldata)-2])
-            bmiinfo=finaldata[len(finaldata)-1]
+            bmi=int(finaldata.get("bmi", 0))
+            bmiinfo=finaldata.get("bmiinfo", "Unknown")
             caloriesreq=maintaincalories
         # else:
         #     print("wrong choice")
