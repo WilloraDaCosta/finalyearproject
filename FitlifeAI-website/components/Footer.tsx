@@ -1,9 +1,15 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { RelativePathString, useRouter } from 'expo-router';
+import {  usePathname  } from 'expo-router';
 
 const Footer = () => {
   const router = useRouter();
+  const pathname = usePathname();
+
+  const hiddenRoutes = ['/', '/auth/login', '/auth/signUp'];
+
+  if (hiddenRoutes.includes(pathname)) return null;
 
   const tabs = [
     {
