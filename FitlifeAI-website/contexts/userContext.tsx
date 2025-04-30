@@ -70,6 +70,10 @@ interface UserInfo {
   sleepHours: number;
   qualityOfSleep: number;
   stressLevel: number;
+  height: number;
+  weight: number;
+  bmi: number;
+  bmiCategory: string;
 
 }
 
@@ -102,6 +106,10 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     sleepHours: 0, // Set initial value for sleepHours
     qualityOfSleep: 0, // Set initial value for qualityOfSleep
     stressLevel: 0, // Set initial value for stressLevel
+    height: 0, // Set initial value for height
+    weight: 0, // Set initial value for weight
+    bmi: 0, // Set initial value for bmi
+    bmiCategory: '', // Set initial value for bmiCategory
   });
 
   // Allow partial updates
