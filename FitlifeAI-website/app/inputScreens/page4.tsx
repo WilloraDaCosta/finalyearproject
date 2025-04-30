@@ -27,23 +27,40 @@ const SleepScreen = () => {
     
   
 
-    router.push('/inputScreens/page3');
+    router.push('/inputScreens/page5');
  
   };
+
+  const bloodPressureOptions = ['Normal', 'Hypertension', 'Prehypertension'];
+
 
   
   return (
     <View style={styles.container}>
       <Text style={styles.welcomeText}>Blood Pressure</Text>
 
-      <Text style={styles.label}>Enter your Blood pressure category</Text>
+      <Text style={styles.label}>Select your Blood pressure category</Text>
 
-    <TextInput
+    {/* <TextInput
         style={styles.input}
         placeholder="blood pressure category"
         value={bloodPressureCategory}
         onChangeText={(text) => setBloodPressureCategory(text)}
-      />
+      /> */}
+
+    <View style={styles.radioContainer}>
+        {bloodPressureOptions.map((option) => (
+          <TouchableOpacity
+            key={option}
+            style={styles.radioButton}
+            onPress={() => setBloodPressureCategory(option)}
+          >
+            <View style={[styles.circle, bloodPressureCategory === option && styles.selected]} />
+            <Text style={styles.radioText}>{option}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+
 
       <Text style={styles.label}>Systolic Pressure</Text>
       <TextInput
@@ -135,6 +152,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 20,
   },
+  
 });
 
 export default SleepScreen;
