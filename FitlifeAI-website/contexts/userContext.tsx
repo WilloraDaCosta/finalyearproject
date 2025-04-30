@@ -74,6 +74,10 @@ interface UserInfo {
   weight: number;
   bmi: number;
   bmiCategory: string;
+  bloodPressureCategory: string;
+  systolicPressure: number;
+  diastolicPressure: number;
+
 
 }
 
@@ -110,6 +114,9 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     weight: 0, // Set initial value for weight
     bmi: 0, // Set initial value for bmi
     bmiCategory: '', // Set initial value for bmiCategory
+    bloodPressureCategory: '', // Set initial value for bloodPressureCategory
+    systolicPressure: 0, // Set initial value for systolicPressure    
+    diastolicPressure: 0, // Set initial value for diastolicPressure
   });
 
   // Allow partial updates
