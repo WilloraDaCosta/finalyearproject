@@ -1,10 +1,14 @@
 from django.contrib.auth import authenticate
-from rest_framework import status
-#from rest_framework.views import APIView
+from rest_framework import status, views
+from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from .serializers import RecommendationSerializer
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from .serializers import RecommendationSerializer, UserSerializer, Page1Serializer, Page2Serializer, Page3Serializer, Page4Serializer, Page5Serializer
+from .models import UserData
 from recommender.functions import Weight_Loss, Weight_Gain, Healthy  # Import functions
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.authtoken.models import Token
 
 @api_view(['POST'])
 def get_recommendations(request):
@@ -42,18 +46,118 @@ def get_recommendations(request):
 def login_user(request):
     """
     Login API for React Native app.
-    Expects JSON: { "emailOrUsername": "user", "password": "pass" }
+    Expects JSON: { "username": "user", "password": "pass" }
     """
-    email_or_username = request.data.get('emailOrUsername')
+    username = request.data.get('username')
     password = request.data.get('password')
 
-    if not email_or_username or not password:
-        return Response({'error': 'Please provide both username/email and password'}, status=status.HTTP_400_BAD_REQUEST)
+    if not username or not password:
+        return Response({'error': 'Please provide both username and password'}, status=status.HTTP_400_BAD_REQUEST)
 
-    # Authenticate using username (email-based login requires custom logic)
-    user = authenticate(username=email_or_username, password=password)
+    user = authenticate(username=username, password=password)
 
     if user is not None:
-        return Response({'message': 'Login successful', 'user': user.username}, status=status.HTTP_200_OK)
+        token, _ = Token.objects.get_or_create(user=user)
+        return Response({
+            'message': 'Login successful',
+            'user': user.username,
+            'token': token.key  # 🔑 THIS is what your frontend needs
+        }, status=status.HTTP_200_OK)
     else:
         return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+    
+
+# def sleep_data(request):
+#     serializer = SleepDataSerializer(data=request.data)
+#     if serializer.is_valid():
+#         serializer.save()
+#         return Response(serializer.data, status=201)
+#     return Response(serializer.errors, status=400)
+
+@permission_classes([AllowAny])
+class SignupView(APIView):
+    def post(self, request, *args, **kwargs):
+        # Validate incoming data using the serializer
+        serializer = UserSerializer(data=request.data)
+
+        if serializer.is_valid():
+            # Save the new user if the data is valid
+            user = serializer.save()
+            token, _ = Token.objects.get_or_create(user=user)
+            return Response({'token': token.key, 'username': user.username}, status=201)
+          #  return Response({"message": "User created successfully!", "user_id": user.id}, status=status.HTTP_201_CREATED)
+        
+        print(serializer.errors)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+# class UserDataView(APIView):
+#     permission_classes = [IsAuthenticated]
+
+#     def post(self, request):
+#         serializer = UserDataSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save(user=request.user)
+#             return Response({'message': 'User data saved successfully'}, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+def get_or_create_userdata(user):
+    userdata, created = UserData.objects.get_or_create(user=user)
+    return userdata
+
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+class Page1View(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        userdata = get_or_create_userdata(request.user)
+        serializer = Page1Serializer(userdata, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Page 1 data saved"}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class Page2View(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        userdata = get_or_create_userdata(request.user)
+        serializer = Page2Serializer(userdata, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Page 2 data saved"}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class Page3View(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        userdata = get_or_create_userdata(request.user)
+        serializer = Page3Serializer(userdata, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Page 3 data saved"}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class Page4View(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        userdata = get_or_create_userdata(request.user)
+        serializer = Page4Serializer(userdata, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Page 4 data saved"}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class Page5View(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        userdata = get_or_create_userdata(request.user)
+        serializer = Page5Serializer(userdata, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Page 5 data saved"}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
