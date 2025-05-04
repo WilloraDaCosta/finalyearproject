@@ -9,6 +9,7 @@ import {
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useUser } from "@/contexts/userContext";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const GenderAgeOccupationScreen = () => {
   const { userInfo, updateUserInfo } = useUser();
@@ -18,7 +19,6 @@ const GenderAgeOccupationScreen = () => {
   const [occupation, setOccupation] = useState("");
   const [physicalActivity, setPhysicalActivity] = useState("");
 
-  const { username } = useLocalSearchParams(); // <-- get username
   const router = useRouter(); // <-- initialize router
 
   const handleNext = async () => {
@@ -27,39 +27,43 @@ const GenderAgeOccupationScreen = () => {
       return;
     }
 
-    // Prepare data to send to backend
-    const userData = {
-      gender,
-      age,
-      occupation,
-      physicalActivity,
-    };
-
     try {
-      // Send POST request using axios
+      const token = await AsyncStorage.getItem("authToken");
+      const username = await AsyncStorage.getItem("username");
+
+      if (!token || !username) {
+        alert("User not authenticated, please log in again.");
+        return;
+      }
+
+      // Prepare data to send to backend
+      const userData = {
+        username,
+        gender,
+        age,
+        occupation,
+        physicalActivity,
+      };
+
+      console.log("Token being used:", token);
+      console.log("Sending userData:", userData);
+
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/recommendations/",
+        "http://192.168.1.36:8000/api/page1/",
         userData,
         {
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Token ${token}`,
           },
         }
       );
 
-      // Check if the response is successful
       if (response.status === 200) {
-        updateUserInfo(userData); // Store updated data in context
-        // Navigate to the next page
+        updateUserInfo(userData);
         router.push({
           pathname: "/inputScreens/page2",
-          params: {
-            username,
-            gender,
-            age,
-            occupation,
-            physicalActivity,
-          },
+          params: userData,
         });
       } else {
         alert("Failed to update data");

@@ -102,6 +102,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import axios from "axios"; // Import axios
 import { useUser } from "@/contexts/userContext"; // <-- Import context
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SignUp = () => {
   // Form state
@@ -143,8 +144,15 @@ const SignUp = () => {
         password: password,
       });
 
+      const { token } = response.data;
+      await AsyncStorage.setItem("authToken", token);
+      await AsyncStorage.setItem("username", response.data.username);
+
+      Alert.alert("Success", "Signed up and logged in!");
+
+      updateUserInfo({ firstName, lastName, email, username });
       console.log("Signup successful:", response.data);
-      Alert.alert("Success", "You have signed up successfully!");
+      //Alert.alert("Success", "You have signed up successfully!");
 
       // Optionally, you can update the global user info context here
       updateUserInfo({ firstName, lastName, email, username });
